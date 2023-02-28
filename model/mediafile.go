@@ -86,6 +86,10 @@ func (mf MediaFile) AlbumCoverArtID() ArtworkID {
 	return artworkIDFromAlbum(Album{ID: mf.AlbumID})
 }
 
+func (mf MediaFile) Filename() string {
+    return filepath.Base(mf.Path)
+}
+
 type MediaFiles []MediaFile
 
 // Dirs returns a deduped list of all directories from the MediaFiles' paths
