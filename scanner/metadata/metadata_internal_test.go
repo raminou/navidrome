@@ -64,13 +64,21 @@ var _ = Describe("Tags", func() {
 	})
 
 	Describe("getAllTagValues", func() {
-		It("returns values from all tag names", func() {
+		It("returns genre values from all tag names", func() {
 			md := &Tags{}
 			md.tags = map[string][]string{
 				"genre": {"Rock", "Pop", "New Wave"},
 			}
 
 			Expect(md.Genres()).To(ConsistOf("Rock", "Pop", "New Wave"))
+		})
+		It("returns publisher values from all tag names", func() {
+			md := &Tags{}
+			md.tags = map[string][]string{
+				"publisher": {"Virgin", "Universal", "Armada"},
+			}
+
+			Expect(md.Publishers()).To(ConsistOf("Virgin", "Universal", "Armada"))
 		})
 	})
 

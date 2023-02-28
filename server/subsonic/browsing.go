@@ -241,6 +241,24 @@ func (api *Router) GetGenres(r *http.Request) (*responses.Subsonic, error) {
 	return response, nil
 }
 
+func (api *Router) GetPublishers(r *http.Request) (*responses.Subsonic, error) {
+	ctx := r.Context()
+	publishers, err := api.ds.Publisher(ctx).GetAll(model.QueryOptions{Sort: "song_count, album_count, name desc", Order: "desc"})
+	if err != nil {
+		log.Error(r, err)
+		return nil, err
+	}
+	for i, g := range publishers {
+		if g.Name == "" {
+			publishers[i].Name = "<Empty>"
+		}
+	}
+
+	response := newResponse()
+	response.Publishers = toPublishers(publishers)
+	return response, nil
+}
+
 func (api *Router) GetArtistInfo(r *http.Request) (*responses.Subsonic, error) {
 	ctx := r.Context()
 	id, err := requiredParamString(r, "id")
@@ -423,6 +441,7 @@ func (api *Router) buildAlbum(ctx context.Context, album *model.Album, mfs model
 	}
 	dir.Year = album.MaxYear
 	dir.Genre = album.Genre
+	dir.Publisher = album.Publisher
 	dir.UserRating = album.Rating
 	if !album.CreatedAt.IsZero() {
 		dir.Created = &album.CreatedAt

@@ -122,7 +122,7 @@ var _ = Describe("Responses", func() {
 				t := time.Date(2016, 03, 2, 20, 30, 0, 0, time.UTC)
 				child[0] = Child{
 					Id: "1", IsDir: true, Title: "title", Album: "album", Artist: "artist", Track: 1,
-					Year: 1985, Genre: "Rock", CoverArt: "1", Size: 8421341, ContentType: "audio/flac",
+					Year: 1985, Publisher: "publisher", Genre: "Rock", CoverArt: "1", Size: 8421341, ContentType: "audio/flac",
 					Suffix: "flac", TranscodedContentType: "audio/mpeg", TranscodedSuffix: "mp3",
 					Duration: 146, BitRate: 320, Starred: &t,
 				}
@@ -335,6 +335,37 @@ var _ = Describe("Responses", func() {
 		})
 	})
 
+    Describe("Publishers", func() {
+		BeforeEach(func() {
+			response.Publishers = &Publishers{}
+		})
+
+		Context("without data", func() {
+			It("should match .XML", func() {
+				Expect(xml.Marshal(response)).To(MatchSnapshot())
+			})
+			It("should match .JSON", func() {
+				Expect(json.Marshal(response)).To(MatchSnapshot())
+			})
+		})
+
+		Context("with data", func() {
+			BeforeEach(func() {
+				publishers := make([]Publisher, 3)
+				publishers[0] = Publisher{SongCount: 1000, AlbumCount: 100, Name: "Virgin"}
+				publishers[1] = Publisher{SongCount: 500, AlbumCount: 50, Name: "Armada"}
+				publishers[2] = Publisher{SongCount: 0, AlbumCount: 0, Name: "Universal"}
+				response.Publishers.Publisher = publishers
+			})
+
+			It("should match .XML", func() {
+				Expect(xml.Marshal(response)).To(MatchSnapshot())
+			})
+			It("should match .JSON", func() {
+				Expect(json.Marshal(response)).To(MatchSnapshot())
+			})
+		})
+	})
 	Describe("AlbumInfo", func() {
 		BeforeEach(func() {
 			response.AlbumInfo = &AlbumInfo{}

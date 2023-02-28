@@ -31,6 +31,8 @@ type Subsonic struct {
 	RandomSongs   *Songs             `xml:"randomSongs,omitempty"                         json:"randomSongs,omitempty"`
 	SongsByGenre  *Songs             `xml:"songsByGenre,omitempty"                        json:"songsByGenre,omitempty"`
 	Genres        *Genres            `xml:"genres,omitempty"                              json:"genres,omitempty"`
+	SongsByPublisher  *Songs         `xml:"songsByPublisher,omitempty"                    json:"songsByPublisher,omitempty"`
+	Publishers        *Publishers    `xml:"publishers,omitempty"                          json:"publishers,omitempty"`
 
 	// ID3
 	Artist              *Indexes             `xml:"artists,omitempty"                     json:"artists,omitempty"`
@@ -110,6 +112,7 @@ type Child struct {
 	Track                 int        `xml:"track,attr,omitempty"                    json:"track,omitempty"`
 	Year                  int        `xml:"year,attr,omitempty"                     json:"year,omitempty"`
 	Genre                 string     `xml:"genre,attr,omitempty"                    json:"genre,omitempty"`
+	Publisher             string     `xml:"publisher,attr,omitempty"                json:"publisher,omitempty"`
 	CoverArt              string     `xml:"coverArt,attr,omitempty"                 json:"coverArt,omitempty"`
 	Size                  int64      `xml:"size,attr,omitempty"                     json:"size,omitempty"`
 	ContentType           string     `xml:"contentType,attr,omitempty"              json:"contentType,omitempty"`
@@ -160,6 +163,7 @@ type Directory struct {
 	Created    *time.Time `xml:"created,attr,omitempty"             json:"created,omitempty"`
 	Year       int        `xml:"year,attr,omitempty"                json:"year,omitempty"`
 	Genre      string     `xml:"genre,attr,omitempty"               json:"genre,omitempty"`
+	Publisher  string     `xml:"publisher,attr,omitempty"           json:"publisher,omitempty"`
 
 	/*
 	   <xs:attribute name="averageRating" type="sub:AverageRating" use="optional"/>  <!-- Added in 1.13.0 -->
@@ -191,6 +195,7 @@ type AlbumID3 struct {
 	UserRating int        `xml:"userRating,attr,omitempty"          json:"userRating,omitempty"`
 	Year       int        `xml:"year,attr,omitempty"                json:"year,omitempty"`
 	Genre      string     `xml:"genre,attr,omitempty"               json:"genre,omitempty"`
+	Publisher  string     `xml:"publisher,attr,omitempty"           json:"publisher,omitempty"`
 }
 
 type ArtistWithAlbumsID3 struct {
@@ -296,6 +301,16 @@ type Genre struct {
 
 type Genres struct {
 	Genre []Genre `xml:"genre,omitempty"                      json:"genre,omitempty"`
+}
+
+type Publisher struct {
+	Name       string `xml:",chardata"                  json:"value,omitempty"`
+	SongCount  int    `xml:"songCount,attr"             json:"songCount"`
+	AlbumCount int    `xml:"albumCount,attr"            json:"albumCount"`
+}
+
+type Publishers struct {
+	Publisher []Publisher `xml:"publisher,omitempty"    json:"publisher,omitempty"`
 }
 
 type AlbumInfo struct {

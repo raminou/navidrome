@@ -39,6 +39,8 @@ type MediaFile struct {
 	Channels             int     `structs:"channels" json:"channels"`
 	Genre                string  `structs:"genre" json:"genre"`
 	Genres               Genres  `structs:"-" json:"genres"`
+	Publisher            string  `structs:"publisher" json:"publisher"`
+	Publishers           Publishers`structs:"-" json:"publishers"`
 	FullText             string  `structs:"full_text" json:"fullText"`
 	SortTitle            string  `structs:"sort_title" json:"sortTitle,omitempty"`
 	SortAlbumName        string  `structs:"sort_album_name" json:"sortAlbumName,omitempty"`
@@ -139,6 +141,7 @@ func (mfs MediaFiles) ToAlbum() Album {
 		a.UpdatedAt = newer(a.UpdatedAt, m.UpdatedAt)
 		a.CreatedAt = older(a.CreatedAt, m.CreatedAt)
 		a.Genres = append(a.Genres, m.Genres...)
+		a.Publishers = append(a.Publishers, m.Publishers...)
 		comments = append(comments, m.Comment)
 		albumArtistIds = append(albumArtistIds, m.AlbumArtistID)
 		songArtistIds = append(songArtistIds, m.ArtistID)
@@ -159,6 +162,9 @@ func (mfs MediaFiles) ToAlbum() Album {
 	a.Genre = slice.MostFrequent(a.Genres).Name
 	slices.SortFunc(a.Genres, func(a, b Genre) bool { return a.ID < b.ID })
 	a.Genres = slices.Compact(a.Genres)
+	a.Publisher = slice.MostFrequent(a.Publishers).Name
+	slices.SortFunc(a.Publishers, func(a, b Publisher) bool { return a.ID < b.ID })
+	a.Publishers = slices.Compact(a.Publishers)
 	a.FullText = " " + utils.SanitizeStrings(fullText...)
 	a = fixAlbumArtist(a, albumArtistIds)
 	songArtistIds = append(songArtistIds, a.AlbumArtistID, a.ArtistID)

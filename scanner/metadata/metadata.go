@@ -103,6 +103,7 @@ func (t Tags) Year() int               { return t.getYear("date") }
 func (t Tags) Comment() string         { return t.getFirstTagValue("comment") }
 func (t Tags) Lyrics() string          { return t.getFirstTagValue("lyrics", "lyrics-eng") }
 func (t Tags) Compilation() bool       { return t.getBool("tcmp", "compilation") }
+func (t Tags) Publishers() []string    { return t.getAllTagValues("tpub", "publisher") }
 func (t Tags) TrackNumber() (int, int) { return t.getTuple("track", "tracknumber") }
 func (t Tags) DiscNumber() (int, int)  { return t.getTuple("disc", "discnumber") }
 func (t Tags) DiscSubtitle() string {

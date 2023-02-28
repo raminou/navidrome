@@ -1,0 +1,1 @@
+<subsonic-response xmlns="http://subsonic.org/restapi" status="ok" version="1.8.0" type="navidrome" serverVersion="v0.0.0"><publishers><publisher songCount="1000" albumCount="100">Virgin</publisher><publisher songCount="500" albumCount="50">Armada</publisher><publisher songCount="0" albumCount="0">Universal</publisher></publishers></subsonic-response>

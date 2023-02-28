@@ -10,6 +10,7 @@ type Artist struct {
 	AlbumCount            int       `structs:"album_count" json:"albumCount"`
 	SongCount             int       `structs:"song_count" json:"songCount"`
 	Genres                Genres    `structs:"-" json:"genres"`
+	Publishers            Publishers`structs:"-" json:"publishers"`
 	FullText              string    `structs:"full_text" json:"fullText"`
 	SortArtistName        string    `structs:"sort_artist_name" json:"sortArtistName,omitempty"`
 	OrderArtistName       string    `structs:"order_artist_name" json:"orderArtistName"`

@@ -27,6 +27,8 @@ type Album struct {
 	Size                  int64     `structs:"size" json:"size"`
 	Genre                 string    `structs:"genre" json:"genre"`
 	Genres                Genres    `structs:"-" json:"genres"`
+	Publisher             string    `structs:"publisher" json:"publisher"`
+	Publishers            Publishers`structs:"-" json:"publishers"`
 	FullText              string    `structs:"full_text" json:"fullText"`
 	SortAlbumName         string    `structs:"sort_album_name" json:"sortAlbumName,omitempty"`
 	SortArtistName        string    `structs:"sort_artist_name" json:"sortArtistName,omitempty"`
@@ -75,10 +77,13 @@ func (als Albums) ToAlbumArtist() Artist {
 		a.SongCount += al.SongCount
 		a.Size += al.Size
 		a.Genres = append(a.Genres, al.Genres...)
+		a.Publishers = append(a.Publishers, al.Publishers...)
 		mbzArtistIds = append(mbzArtistIds, al.MbzAlbumArtistID)
 	}
 	slices.SortFunc(a.Genres, func(a, b Genre) bool { return a.ID < b.ID })
 	a.Genres = slices.Compact(a.Genres)
+	slices.SortFunc(a.Publishers, func(a, b Publisher) bool { return a.ID < b.ID })
+	a.Publishers = slices.Compact(a.Publishers)
 	a.MbzArtistID = slice.MostFrequent(mbzArtistIds)
 
 	return a
@@ -91,6 +96,7 @@ type AlbumRepository interface {
 	Get(id string) (*Album, error)
 	GetAll(...QueryOptions) (Albums, error)
 	GetAllWithoutGenres(...QueryOptions) (Albums, error)
+	GetAllWithoutPublishers(...QueryOptions) (Albums, error)
 	Search(q string, offset int, size int) (Albums, error)
 	AnnotatedRepository
 }
