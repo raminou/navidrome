@@ -129,6 +129,18 @@ func toGenres(genres model.Genres) *responses.Genres {
 	return &responses.Genres{Genre: response}
 }
 
+func toPublishers(publishers model.Publishers) *responses.Publishers {
+	response := make([]responses.Publisher, len(publishers))
+	for i, g := range publishers {
+		response[i] = responses.Publisher{
+			Name:       g.Name,
+			SongCount:  g.SongCount,
+			AlbumCount: g.AlbumCount,
+		}
+	}
+	return &responses.Publishers{Publisher: response}
+}
+
 func getTranscoding(ctx context.Context) (format string, bitRate int) {
 	if trc, ok := request.TranscodingFrom(ctx); ok {
 		format = trc.TargetFormat
@@ -151,6 +163,7 @@ func childFromMediaFile(ctx context.Context, mf model.MediaFile) responses.Child
 	child.Year = int32(mf.Year)
 	child.Artist = mf.Artist
 	child.Genre = mf.Genre
+	child.Publisher = mf.Publisher
 	child.Track = int32(mf.TrackNumber)
 	child.Duration = int32(mf.Duration)
 	child.Size = mf.Size
@@ -217,6 +230,7 @@ func childFromAlbum(_ context.Context, al model.Album) responses.Child {
 	child.Artist = al.AlbumArtist
 	child.Year = int32(al.MaxYear)
 	child.Genre = al.Genre
+	child.Publisher = al.Publisher
 	child.CoverArt = al.CoverArtID().String()
 	child.Created = &al.CreatedAt
 	child.Parent = al.AlbumArtistID

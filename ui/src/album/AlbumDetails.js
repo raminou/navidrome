@@ -206,6 +206,7 @@ const Details = (props) => {
         })}
     </>
   )
+  !isXsmall && addDetail(<>{record.publisher}</>)
   !isXsmall && addDetail(<DurationField source={'duration'} />)
   !isXsmall && addDetail(<SizeField source="size" />)
 
@@ -285,6 +286,9 @@ const AlbumDetails = (props) => {
             </Typography>
             <Typography component={'div'} className={classes.recordMeta}>
               <Details />
+            </Typography>
+            <Typography component={'p'} className={classes.recordMeta}>
+              {record.publisher}
             </Typography>
             {config.enableStarRating && (
               <div>
