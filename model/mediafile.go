@@ -110,6 +110,7 @@ func (mfs MediaFiles) ToAlbum() Album {
 	var songArtistIds []string
 	var mbzAlbumIds []string
 	var comments []string
+	var oldestPublisher string
 	for _, m := range mfs {
 		// We assume these attributes are all the same for all songs on an album
 		a.ID = m.AlbumID
@@ -135,7 +136,10 @@ func (mfs MediaFiles) ToAlbum() Album {
 		if a.MinYear == 0 {
 			a.MinYear = m.Year
 		} else if m.Year > 0 {
-			a.MinYear = number.Min(a.MinYear, m.Year)
+			if m.Year < a.MinYear {
+				a.MinYear = m.Year
+				oldestPublisher = m.Publisher
+			}
 		}
 		a.MaxYear = number.Max(a.MaxYear, m.Year)
 		a.UpdatedAt = newer(a.UpdatedAt, m.UpdatedAt)
@@ -162,7 +166,7 @@ func (mfs MediaFiles) ToAlbum() Album {
 	a.Genre = slice.MostFrequent(a.Genres).Name
 	slices.SortFunc(a.Genres, func(a, b Genre) bool { return a.ID < b.ID })
 	a.Genres = slices.Compact(a.Genres)
-	a.Publisher = slice.MostFrequent(a.Publishers).Name
+	a.Publisher = oldestPublisher
 	slices.SortFunc(a.Publishers, func(a, b Publisher) bool { return a.ID < b.ID })
 	a.Publishers = slices.Compact(a.Publishers)
 	a.FullText = " " + utils.SanitizeStrings(fullText...)
