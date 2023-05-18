@@ -197,6 +197,7 @@ const Details = (props) => {
 
   const year = formatRange(record, 'year')
   year && addDetail(<>{year}</>)
+  record.publisher && addDetail(<>{record.publisher}</>)
   addDetail(
     <>
       {record.songCount +
