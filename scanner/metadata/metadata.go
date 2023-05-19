@@ -196,9 +196,15 @@ func (t Tags) getFirstTagValue(tagNames ...string) string {
 
 func (t Tags) getAllTagValues(tagNames ...string) []string {
 	var values []string
+	var existValues = make(map[string]bool)
 	for _, tag := range tagNames {
 		if v, ok := t.tags[tag]; ok {
-			values = append(values, v...)
+			for _, iv := range v {
+				if !existValues[iv] {
+					values = append(values, iv)
+					existValues[iv] = true
+				}
+			}
 		}
 	}
 	return values
