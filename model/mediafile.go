@@ -133,12 +133,17 @@ func (mfs MediaFiles) ToAlbum() Album {
 		// Calculated attributes based on aggregations
 		a.Duration += m.Duration
 		a.Size += m.Size
+		if oldestPublisher == "" && len(m.Publishers) > 0 {
+			oldestPublisher = m.Publishers[0].Name
+		}
 		if a.MinYear == 0 {
 			a.MinYear = m.Year
 		} else if m.Year > 0 {
 			if m.Year < a.MinYear {
 				a.MinYear = m.Year
-				oldestPublisher = m.Publisher
+				if len(m.Publishers) > 0 {
+					oldestPublisher = m.Publishers[0].Name
+				}
 			}
 		}
 		a.MaxYear = number.Max(a.MaxYear, m.Year)

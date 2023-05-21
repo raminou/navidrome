@@ -161,16 +161,6 @@ func (r *albumRepository) GetAllWithoutGenres(options ...model.QueryOptions) (mo
 	return res, err
 }
 
-func (r *albumRepository) GetAllWithoutPublishers(options ...model.QueryOptions) (model.Albums, error) {
-	sq := r.selectAlbum(options...)
-	res := model.Albums{}
-	err := r.queryAll(sq, &res)
-	if err != nil {
-		return nil, err
-	}
-	return res, err
-}
-
 func (r *albumRepository) purgeEmpty() error {
 	del := Delete(r.tableName).Where("id not in (select distinct(album_id) from media_file)")
 	c, err := r.executeSQL(del)
