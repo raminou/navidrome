@@ -44,12 +44,6 @@ func (api *Router) getAlbumList(r *http.Request) (model.Albums, int64, error) {
 			return nil, 0, err
 		}
 		opts = filter.AlbumsByGenre(genre)
-	case "byPublisher":
-		publisher, err := requiredParamString(r, "publisher")
-		if err != nil {
-			return nil, 0, err
-		}
-		opts = filter.AlbumsByPublisher(publisher)
 	case "byYear":
 		fromYear, err := requiredParamInt(r, "fromYear")
 		if err != nil {
@@ -200,23 +194,6 @@ func (api *Router) GetSongsByGenre(r *http.Request) (*responses.Subsonic, error)
 	response := newResponse()
 	response.SongsByGenre = &responses.Songs{}
 	response.SongsByGenre.Songs = childrenFromMediaFiles(r.Context(), songs)
-	return response, nil
-}
-
-func (api *Router) GetSongsByPublisher(r *http.Request) (*responses.Subsonic, error) {
-	count := number.Min(utils.ParamInt(r, "count", 10), 500)
-	offset := number.Min(utils.ParamInt(r, "offset", 0), 500)
-	publisher := utils.ParamString(r, "publisher")
-
-	songs, err := api.getSongs(r.Context(), offset, count, filter.SongsByPublisher(publisher))
-	if err != nil {
-		log.Error(r, "Error retrieving random songs", "error", err)
-		return nil, err
-	}
-
-	response := newResponse()
-	response.SongsByPublisher = &responses.Songs{}
-	response.SongsByPublisher.Songs = childrenFromMediaFiles(r.Context(), songs)
 	return response, nil
 }
 

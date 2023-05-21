@@ -50,13 +50,6 @@ func AlbumsByGenre(genre string) Options {
 	}
 }
 
-func AlbumsByPublisher(publisher string) Options {
-	return Options{
-		Sort:    "publisher.name asc, name asc",
-		Filters: squirrel.Eq{"publisher.name": publisher},
-	}
-}
-
 func AlbumsByArtistID(artistId string) Options {
 	var filters squirrel.Sqlizer
 	if conf.Server.SubsonicArtistParticipations {
@@ -95,13 +88,6 @@ func SongsByGenre(genre string) Options {
 	return Options{
 		Sort:    "genre.name asc, title asc",
 		Filters: squirrel.Eq{"genre.name": genre},
-	}
-}
-
-func SongsByPublisher(publisher string) Options {
-	return Options{
-		Sort:    "publisher.name asc, title asc",
-		Filters: squirrel.Eq{"publisher.name": publisher},
 	}
 }
 
