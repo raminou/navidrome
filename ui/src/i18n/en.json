@@ -27,7 +27,6 @@
                 "rating": "Rating",
                 "quality": "Quality",
                 "bpm": "BPM",
-                "publisher": "Publisher",
                 "playDate": "Last Played",
                 "createdAt": "Date added"
             },
