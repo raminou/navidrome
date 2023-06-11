@@ -196,6 +196,12 @@ const Details = (props) => {
     details.push(<span key={`detail-${record.id}-${id}`}>{obj}</span>)
   }
 
+  let sumDetails = []
+  const addSumDetail = (obj) => {
+    const id = sumDetails.length
+    sumDetails.push(<span key={`sumdetail-${record.id}-${id}`}>{obj}</span>)
+  }
+
   const originalYearRange = formatRange(record, 'originalYear')
   const originalDate = record.originalDate
     ? FormatFullDate(record.originalDate)
@@ -248,8 +254,9 @@ const Details = (props) => {
           : ['(', record.releases, ')))'].join(' ')}
       </>
     )
+  record.publisher && addDetail(<>{record.publisher}</>)
 
-  addDetail(
+  addSumDetail(
     <>
       {record.songCount +
         ' ' +
@@ -258,10 +265,16 @@ const Details = (props) => {
         })}
     </>
   )
-  !isXsmall && addDetail(<DurationField source={'duration'} />)
-  !isXsmall && addDetail(<SizeField source="size" />)
+  !isXsmall && addSumDetail(<DurationField source={'duration'} />)
+  !isXsmall && addSumDetail(<SizeField source="size" />)
 
-  return <>{intersperse(details, ' · ')}</>
+  return (
+    <>
+      {intersperse(sumDetails, ' · ')}
+      <br />
+      {intersperse(details, ' · ')}
+    </>
+  )
 }
 
 const AlbumDetails = (props) => {
